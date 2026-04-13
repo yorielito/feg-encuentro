@@ -1,0 +1,21 @@
+export type PrayerEventItem = {
+  id: string;
+  title: string;
+  slug: string;
+  description?: string;
+  imageUrl?: string;
+  startDate: string;
+  endDate?: string;
+  location: string;
+  capacity?: number;
+  registrationEnabled: boolean;
+  status: "upcoming" | "closed" | "past";
+  specialInstructions?: string;
+  featured?: boolean;
+  showOnHome?: boolean;
+  isPublished: boolean;
+  isArchived?: boolean;
+  slotStartHour: number;
+  slotEndHour: number;
+  maxPeoplePerSlot: number;
+};

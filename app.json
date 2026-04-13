@@ -1,30 +1,36 @@
 {
   "expo": {
-    "name": "encuentro-mobile",
-    "slug": "encuentro-mobile",
+    "name": "Encuentro con Jesús",
+    "slug": "Encuentro",
+    "scheme": "encuentro",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "plugins": ["expo-notifications", "expo-dev-client", "expo-web-browser"],
+    "extra": {
+      "eas": {
+        "projectId": "f8627e38-0057-49eb-86d5-28c42bf2b268"
+      }
+    },
     "splash": {
-      "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yorielinho10.encuentro"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#ffffff",
+        "package": "com.yorielinho10.encuentro",
+        "googleServicesFile": "./google-services.json"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.yorielinho10.encuentro"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
+    "web": {}
   }
 }
