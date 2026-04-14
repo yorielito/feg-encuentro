@@ -3,6 +3,7 @@ import * as Device from "expo-device";
 import { Platform } from "react-native";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "./firebase";
+import messaging from "@react-native-firebase/messaging";
 
 export async function registerDevicePushToken(userId: string) {
   try {
@@ -49,5 +50,17 @@ export async function registerDevicePushToken(userId: string) {
   } catch (err) {
     console.error("❌ registerDevicePushToken error:", err);
     return null;
+  }
+}
+
+export async function subscribeToTopics() {
+  try {
+    await messaging().subscribeToTopic("events");
+    await messaging().subscribeToTopic("sermons");
+    await messaging().subscribeToTopic("prayer");
+
+    console.log("✅ Subscribed to topics");
+  } catch (err) {
+    console.error("❌ subscribeToTopics error:", err);
   }
 }

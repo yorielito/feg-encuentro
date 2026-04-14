@@ -7,7 +7,12 @@
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
-    "plugins": ["expo-notifications", "expo-dev-client", "expo-web-browser"],
+    "plugins": [
+      "expo-dev-client",
+      "expo-web-browser",
+      "@react-native-firebase/app",
+      "@react-native-firebase/messaging"
+    ],
     "extra": {
       "eas": {
         "projectId": "f8627e38-0057-49eb-86d5-28c42bf2b268"
