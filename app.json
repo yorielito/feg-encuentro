@@ -24,7 +24,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yorielinho10.encuentro"
+      "bundleIdentifier": "com.yorielinho10.encuentro",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
