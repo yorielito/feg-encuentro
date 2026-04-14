@@ -12,9 +12,9 @@ import {
   logout as firebaseLogout,
   subscribeToAuthChanges,
 } from "../services/auth.service";
-import { registerForPushNotificationsAsync } from "../hooks/usePushNotifications";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../services/firebase";
+import { registerDevicePushToken } from "../services/push.service";
 
 type AuthContextValue = {
   user: User | null;
@@ -33,16 +33,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     async function initAuth() {
       try {
-        await ensureAnonymousUser();
+        ensureAnonymousUser();
 
         unsub = subscribeToAuthChanges(async (nextUser) => {
-          console.log("👤 Auth change:", nextUser);
-
           setUser(nextUser);
 
+          console.log("auth user", nextUser?.uid);
+
           if (nextUser) {
-            console.log("🚀 calling setupPush");
-            await setupPush(nextUser.uid);
+            if (nextUser) {
+              console.log("🚀 registering device push token");
+              await registerDevicePushToken(nextUser.uid);
+            }
           }
 
           setLoading(false);
@@ -72,26 +74,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }),
     [user, loading]
   );
-
-  async function setupPush(userId: string) {
-    try {
-      const token = await registerForPushNotificationsAsync();
-
-      if (!token) return;
-
-      await setDoc(
-        doc(db, "users", userId),
-        {
-          expoPushToken: token,
-        },
-        { merge: true }
-      );
-
-      console.log("✅ Push token guardado");
-    } catch (err) {
-      console.error("❌ Error setupPush:", err);
-    }
-  }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

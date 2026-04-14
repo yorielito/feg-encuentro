@@ -23,10 +23,9 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#ffffff",
-        "package": "com.yorielinho10.encuentro",
-        "googleServicesFile": "./google-services.json"
+        "backgroundColor": "#ffffff"
       },
+      "googleServicesFile": "./google-services.json",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.yorielinho10.encuentro"
