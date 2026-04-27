@@ -14,13 +14,15 @@ export const onEventCreated = onDocumentCreated(
 
     if (!data) return;
 
-    console.log("🔥 Nuevo evento:", data.title);
-
     await getMessaging().send({
       topic: "events",
       notification: {
         title: "Nuevo evento 🙌",
         body: data.title,
+      },
+      data: {
+        type: "event",
+        eventId: String(event.params.eventId),
       },
     });
   }
@@ -41,6 +43,10 @@ export const onSermonCreated = onDocumentCreated(
         title: "Nuevo sermón 🎧",
         body: data.title,
       },
+      data: {
+        type: "sermon",
+        sermonId: String(event.params.sermonId),
+      },
     });
   }
 );
@@ -59,6 +65,10 @@ export const onPrayerCreated = onDocumentCreated(
       notification: {
         title: "Nueva jornada de oración 🙏",
         body: data.title,
+      },
+      data: {
+        type: "prayer",
+        prayerId: String(event.params.id),
       },
     });
   }

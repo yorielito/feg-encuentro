@@ -11,6 +11,7 @@ import { AuthProvider, useAuth } from "./src/context/AuthContext";
 import Toast from "react-native-toast-message";
 import { AudioProvider } from "./src/context/AudioPlayerContext";
 import MiniPlayer from "./src/components/media/MiniPlayer";
+import { useNotificationNavigation } from "./src/hooks/useNotificationNavigation";
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
@@ -50,6 +51,8 @@ function navigateFromNotification(
 function RootContent() {
   const { loading } = useAuth();
   const [currentRouteName, setCurrentRouteName] = useState<string>("");
+
+  useNotificationNavigation();
 
   if (loading) {
     return (

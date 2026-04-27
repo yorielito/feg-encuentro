@@ -5,18 +5,30 @@ import {
   getDocs,
   orderBy,
   query,
+  where,
 } from "firebase/firestore";
 import { db } from "./firebase";
 import type { EventItem } from "../types/event";
 
 export async function listHomeEvents(): Promise<EventItem[]> {
-  const q = query(collection(db, "events"), orderBy("startAt", "asc"));
+  const nowIso = new Date().toISOString();
+
+  const q = query(
+    collection(db, "events"),
+    where("isPublished", "==", true),
+    where("isArchived", "==", false),
+    where("showOnHome", "==", true),
+    where("status", "==", "upcoming"),
+    where("startAt", ">=", nowIso),
+    orderBy("startAt", "asc")
+  );
+
   const snapshot = await getDocs(q);
 
-  return snapshot.docs
-    .map((doc) => ({ id: doc.id, ...(doc.data() as Omit<EventItem, "id">) }))
-    .filter((item) => item.isPublished && !item.isArchived)
-    .slice(0, 6);
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...(doc.data() as Omit<EventItem, "id">),
+  }));
 }
 
 export async function listPublishedEvents(): Promise<EventItem[]> {

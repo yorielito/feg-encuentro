@@ -5,12 +5,21 @@ import {
   getDocs,
   orderBy,
   query,
+  where,
 } from "firebase/firestore";
 import { db } from "./firebase";
 import type { PrayerEventItem } from "../types/prayerEvent";
 
 export async function listHomePrayerEvents(): Promise<PrayerEventItem[]> {
-  const q = query(collection(db, "prayerEvents"), orderBy("startDate", "asc"));
+  const q = query(
+    collection(db, "prayerEvents"),
+    where("isPublished", "==", true),
+    where("isArchived", "==", false),
+    where("showOnHome", "==", true),
+    where("status", "==", "upcoming"),
+    orderBy("startDate", "asc")
+  );
+
   const snapshot = await getDocs(q);
 
   return snapshot.docs
@@ -18,7 +27,6 @@ export async function listHomePrayerEvents(): Promise<PrayerEventItem[]> {
       id: doc.id,
       ...(doc.data() as Omit<PrayerEventItem, "id">),
     }))
-    .filter((item) => item.isPublished && !item.isArchived)
     .slice(0, 3);
 }
 

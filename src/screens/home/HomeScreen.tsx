@@ -81,22 +81,55 @@ export default function HomeScreen() {
 
   async function loadHome() {
     try {
-      const [settingsData, fixedData, eventsData, prayerData, sermonsData] =
-        await Promise.all([
-          getSiteSettings(),
-          listHomeFixedEvents(),
-          listHomeEvents(),
-          listHomePrayerEvents(),
-          listHomeSermons(),
-        ]);
+      setLoading(true);
 
-      setSettings(settingsData);
-      setFixedEvents(fixedData);
-      setEvents(eventsData);
-      setPrayerEvents(prayerData);
-      setSermons(sermonsData);
+      // SETTINGS
+      try {
+        const settingsData = await getSiteSettings();
+        console.log("✅ settings OK");
+        setSettings(settingsData);
+      } catch (e) {
+        console.error("❌ settings error:", e);
+      }
+
+      // FIXED EVENTS
+      try {
+        const fixedData = await listHomeFixedEvents();
+        console.log("✅ fixedEvents OK");
+        setFixedEvents(fixedData);
+      } catch (e) {
+        console.error("❌ fixedEvents error:", e);
+      }
+
+      // EVENTS
+      try {
+        const eventsData = await listHomeEvents();
+        console.log("✅ events OK");
+        setEvents(eventsData);
+      } catch (e) {
+        console.error("❌ events error:", e);
+      }
+
+      // PRAYER EVENTS
+      try {
+        const prayerData = await listHomePrayerEvents();
+        console.log("✅ prayerEvents OK");
+        setPrayerEvents(prayerData);
+      } catch (e) {
+        console.error("❌ prayerEvents error:", e);
+      }
+
+      // SERMONS
+      try {
+        const sermonsData = await listHomeSermons();
+        console.log("✅ sermons OK");
+        setSermons(sermonsData);
+      } catch (e) {
+        console.error("❌ sermons error:", e);
+      }
+  
     } catch (error) {
-      console.error("loadHome error:", error);
+      console.error("💥 loadHome fatal error:", error);
     } finally {
       setLoading(false);
     }

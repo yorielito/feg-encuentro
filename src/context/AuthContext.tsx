@@ -12,9 +12,10 @@ import {
   logout as firebaseLogout,
   subscribeToAuthChanges,
 } from "../services/auth.service";
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "../services/firebase";
-import { registerDevicePushToken } from "../services/push.service";
+import {
+  registerDevicePushToken,
+  subscribeToTopics,
+} from "../services/push.service";
 
 type AuthContextValue = {
   user: User | null;
@@ -43,7 +44,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           if (nextUser) {
             if (nextUser) {
               console.log("🚀 registering device push token");
-              await registerDevicePushToken(nextUser.uid);
+             const token = await registerDevicePushToken(nextUser.uid);
+
+             if (token) {
+               await subscribeToTopics();
+             }
             }
           }
 

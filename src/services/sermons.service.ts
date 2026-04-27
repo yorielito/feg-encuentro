@@ -5,17 +5,26 @@ import {
   getDocs,
   orderBy,
   query,
+  where,
 } from "firebase/firestore";
 import { db } from "./firebase";
 import type { SermonItem } from "../types/sermon";
 
 export async function listHomeSermons(): Promise<SermonItem[]> {
-  const q = query(collection(db, "sermons"), orderBy("date", "desc"));
+  const q = query(
+    collection(db, "sermons"),
+    where("isPublished", "==", true),
+    where("isArchived", "==", false),
+    orderBy("date", "desc")
+  );
+
   const snapshot = await getDocs(q);
 
   return snapshot.docs
-    .map((doc) => ({ id: doc.id, ...(doc.data() as Omit<SermonItem, "id">) }))
-    .filter((item) => item.isPublished && !item.isArchived)
+    .map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as Omit<SermonItem, "id">),
+    }))
     .slice(0, 4);
 }
 
